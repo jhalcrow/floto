@@ -1,0 +1,122 @@
+[
+	{
+		"name": "abra",
+		"imageUrl": "/static/img/pokemon/abra.jpg"
+	},
+	{
+		"name": "aerodactyl",
+		"imageUrl": "/static/img/pokemon/aerodactyl.jpg"
+	},
+	{
+		"name": "alakazam",
+		"imageUrl": "/static/img/pokemon/alakazam.jpg"
+	},
+	{
+		"name": "arbok",
+		"imageUrl": "/static/img/pokemon/arbok.jpg"
+	},
+	{
+		"name": "arcanine",
+		"imageUrl": "/static/img/pokemon/arcanine.jpg"
+	},
+	{
+		"name": "articuno",
+		"imageUrl": "/static/img/pokemon/articuno.jpg"
+	},
+	{
+		"name": "beedrill",
+		"imageUrl": "/static/img/pokemon/beedrill.jpg"
+	},
+	{
+		"name": "bellsprout",
+		"imageUrl": "/static/img/pokemon/bellsprout.jpg"
+	},
+	{
+		"name": "blastoise",
+		"imageUrl": "/static/img/pokemon/blastoise.jpg"
+	},
+	{
+		"name": "bulbasaur",
+		"imageUrl": "/static/img/pokemon/bulbasaur.jpg"
+	},
+	{
+		"name": "butterfree",
+		"imageUrl": "/static/img/pokemon/butterfree.jpg"
+	},
+	{
+		"name": "caterpie",
+		"imageUrl": "/static/img/pokemon/caterpie.jpg"
+	},
+	{
+		"name": "chansey",
+		"imageUrl": "/static/img/pokemon/chansey.jpg"
+	},
+	{
+		"name": "charizard",
+		"imageUrl": "/static/img/pokemon/charizard.jpg"
+	},
+	{
+		"name": "charmander",
+		"imageUrl": "/static/img/pokemon/charmander.jpg"
+	},
+	{
+		"name": "charmeleon",
+		"imageUrl": "/static/img/pokemon/charmeleon.jpg"
+	},
+	{
+		"name": "clefable",
+		"imageUrl": "/static/img/pokemon/clefable.jpg"
+	},
+	{
+		"name": "clefairy",
+		"imageUrl": "/static/img/pokemon/clefairy.jpg"
+	},
+	{
+		"name": "cloyster",
+		"imageUrl": "/static/img/pokemon/cloyster.jpg"
+	},
+	{
+		"name": "cubone",
+		"imageUrl": "/static/img/pokemon/cubone.jpg"
+	},
+	{
+		"name": "dewgong",
+		"imageUrl": "/static/img/pokemon/dewgong.jpg"
+	},
+	{
+		"name": "diglett",
+		"imageUrl": "/static/img/pokemon/diglett.jpg"
+	},
+	{
+		"name": "ditto",
+		"imageUrl": "/static/img/pokemon/ditto.jpg"
+	},
+	{
+		"name": "dodrio",
+		"imageUrl": "/static/img/pokemon/dodrio.jpg"
+	},
+	{
+		"name": "doduo",
+		"imageUrl": "/static/img/pokemon/doduo.jpg"
+	},
+	{
+		"name": "dragonair",
+		"imageUrl": "/static/img/pokemon/dragonair.jpg"
+	},
+	{
+		"name": "dragonite",
+		"imageUrl": "/static/img/pokemon/dragonite.jpg"
+	},
+	{
+		"name": "dratini",
+		"imageUrl": "/static/img/pokemon/dratini.jpg"
+	},
+	{
+		"name": "drowzee",
+		"imageUrl": "/static/img/pokemon/drowzee.jpg"
+	},
+	{
+		"name": "dugtrio",
+		"imageUrl": "/static/img/pokemon/dugtrio.jpg"
+	}
+]
