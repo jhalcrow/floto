@@ -1,16 +1,27 @@
-<html lang="en" ng-app="flotoApp">
+<html lang="en" ng-app>
 <head>
 	<meta charset="utf-8">
-	<title>My AngularJS App</title>
+	<title>Floto Gallery</title>
 	<link rel="stylesheet" href="/static/css/floto.css"/>
 	<link rel="stylesheet" href="/static/lib/bootstrap/css/bootstrap.min.css">
 
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
 	<script src="/static/lib/bootstrap/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body ng-controller="FlotoCtrl">
 
-	
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<ul class="thumbnails">
+				<li ng-repeat="phone in phones" class="span3">
+					<a href="#" class="thumbnail">
+						<img ng-src="{{phone.imageUrl}}">
+						<!--<a href="#/phones/{{phone.id}}">{{phone.name}}</a>-->
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
 
 	<!-- In production use:
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
