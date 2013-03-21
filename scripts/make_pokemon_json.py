@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os
 
-num_pokemon = 31
+num_pokemon = 7
 
 with open("../static/pokemon.json", "w") as f:
 	f.write('[\n')
