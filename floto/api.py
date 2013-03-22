@@ -1,15 +1,17 @@
 from flask import Blueprint, request, current_app
+import json
 
 api = Blueprint('api', __name__)
 
-@api.route("/events/<event_id>/incoming", methods=["POST"])
+@api.route("/events/<event_id>/incoming", methods=["POST", "HEAD"])
 def recieve_photo(event_id):
     '''
     Adds a new photo for an event, should be called by
     Mandrill when an email is recieved
     '''
     message = request.json
-    current_app.logging.debug(json.dumps(message))
+    current_app.logger.debug(json.dumps(message))
+    return "OK"
 
 @api.route("/photos/<photo_id>")
 def get_photo(photo_id):
