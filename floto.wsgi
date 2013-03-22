@@ -2,7 +2,8 @@
 
 import os
 import sys
-
+import logging
+logging.basicConfig(stream=sys.stderr)
 # virtualenv activation if any
 #activate_this = '/home/envs/supaenv/bin/activate_this.py'
 #execfile(activate_this, dict(__file__=activate_this))
