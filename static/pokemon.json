@@ -1,26 +1,26 @@
 [
 	{
 		"name": "abra",
-		"imageUrl": "/static/img/pokemon/abra.jpg"
+		"imageUrl": "img/pokemon/abra.jpg"
 	},
 	{
 		"name": "aerodactyl",
-		"imageUrl": "/static/img/pokemon/aerodactyl.jpg"
+		"imageUrl": "img/pokemon/aerodactyl.jpg"
 	},
 	{
 		"name": "alakazam",
-		"imageUrl": "/static/img/pokemon/alakazam.jpg"
+		"imageUrl": "img/pokemon/alakazam.jpg"
 	},
 	{
 		"name": "arbok",
-		"imageUrl": "/static/img/pokemon/arbok.jpg"
+		"imageUrl": "img/pokemon/arbok.jpg"
 	},
 	{
 		"name": "arcanine",
-		"imageUrl": "/static/img/pokemon/arcanine.jpg"
+		"imageUrl": "img/pokemon/arcanine.jpg"
 	},
 	{
 		"name": "articuno",
-		"imageUrl": "/static/img/pokemon/articuno.jpg"
+		"imageUrl": "img/pokemon/articuno.jpg"
 	}
 ]
