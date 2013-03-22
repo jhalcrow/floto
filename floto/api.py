@@ -11,6 +11,7 @@ def recieve_photo(event_id):
     '''
     message = request.json
     current_app.logger.debug(json.dumps(message))
+    current_app.extensions['mongo'].emails.save(message)
     return "OK"
 
 @api.route("/photos/<photo_id>")
