@@ -13,3 +13,9 @@ sys.path.insert(0, PROJECT_ROOT)
 
 from floto import create_app
 application = create_app()
+
+from logging.handlers import FileHandler
+file_handler = FileHandler('/tmp/floto.log')
+
+file_handler.setLevel(logging.DEBUG)
+application.logger.addHandler(file_handler)
