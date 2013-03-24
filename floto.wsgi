@@ -13,7 +13,7 @@ sys.path.insert(0, PROJECT_ROOT)
 
 from floto import create_app
 application = create_app()
-
+application.config.from_envvar('FLOTO_SETTINGS')
 from logging.handlers import FileHandler
 file_handler = FileHandler('/tmp/floto.log')
 

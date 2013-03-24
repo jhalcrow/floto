@@ -50,7 +50,7 @@ def get_tip(event_id):
           'id': str(p['_id'])} for p in recent]
     }
     if response['photos']:
-        session.last_ts = response['photos'][0]['ts']
+        session['last_ts'] = response['photos'][0]['ts']
     return jsonify(response)
     
 
@@ -62,7 +62,7 @@ def get_new(event_id):
     
     db = current_app.extensions['mongo']
     n = int(request.args.get('n', 6))
-    recent = db.photos.find({'event': event_id, 'ts': {'$gt': session.last_ts}}, 
+    recent = db.photos.find({'event': event_id, 'ts': {'$gt': session['last_ts']}}, 
         sort=[('ts', pymongo.DESCENDING)]).limit(n)
     response = {'photos': 
         [{'name': p['from_name'],
@@ -70,5 +70,5 @@ def get_new(event_id):
           'id': str(p['_id'])} for p in recent]
     }
     if response['photos']:
-        session.last_ts = response['photos'][0]['ts']
+        session['last_ts'] = response['photos'][0]['ts']
     return jsonify(response)
