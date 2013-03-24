@@ -11,9 +11,9 @@ logging.basicConfig(stream=sys.stderr)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, PROJECT_ROOT)
 
-from floto import create_app
-application = create_app()
-application.config.from_envvar('FLOTO_SETTINGS')
+from floto import create_app, config
+application = create_app(config.ProductionConfig())
+
 from logging.handlers import FileHandler
 file_handler = FileHandler('/tmp/floto.log')
 

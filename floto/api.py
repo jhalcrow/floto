@@ -1,5 +1,5 @@
 from flask import Blueprint, request, current_app, session,\
- jsonify, send_file, abort
+ jsonify, send_file, abort, url_for
 from StringIO import StringIO
 import json
 import pymongo
@@ -62,11 +62,14 @@ def get_new(event_id):
     
     db = current_app.extensions['mongo']
     n = int(request.args.get('n', 6))
-    recent = db.photos.find({'event': event_id, 'ts': {'$gt': session['last_ts']}}, 
-        sort=[('ts', pymongo.DESCENDING)]).limit(n)
+    query = {'event': event_id}
+    if 'last_ts' in session:
+        query['ts'] = {'$gt': session['last_ts']}
+    recent = db.photos.find(query,sort=[('ts', pymongo.DESCENDING)]).limit(n)
     response = {'photos': 
         [{'name': p['from_name'],
-           'ts': p['ts'], 
+          'ts': p['ts'],
+          'url': url_for('.get_photo', photo_id=str(p['_id'])),
           'id': str(p['_id'])} for p in recent]
     }
     if response['photos']:
