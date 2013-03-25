@@ -10,4 +10,6 @@ function FlotoCtrl($scope, $http) {
 		$scope.images = data;
 		console.log(data);
 	});
+
+	
 }

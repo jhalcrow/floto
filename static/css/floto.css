@@ -1,4 +1,13 @@
+body, html{
+  height: 100%;
+}
+
+#main {
+	height: 100%;
+}
 .thumbnail-true {
 	border-color: rgb(138, 135, 135);
-	border-width: 7px;
+	border-width: 2px;
 }
+
+.row-fluid ul.thumbnails li.span2:nth-child(6n + 7) { margin-left : 0px; }
