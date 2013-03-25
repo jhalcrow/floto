@@ -12,6 +12,16 @@
     <script src="js/controllers.js"></script>
     <script src="lib/ui-bootstrap-tpls-0.2.0.js"></script>
 
+
+    <script>
+        var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        var height = (window.innerHeight > 0) ? window.innerHeight : screen.height;
+        console.log(width)
+        console.log(height)
+        $("#main").height($(window).height());
+        $("#main").width($(window).width());
+    </script>
+
 </head>
 <body ng-controller="FlotoCtrl">
 
