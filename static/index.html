@@ -12,29 +12,13 @@
     <script src="js/controllers.js"></script>
     <script src="lib/ui-bootstrap-tpls-0.2.0.js"></script>
 
-
-    <script>
-    /*
-    $(document).ready(function() {
-        //var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-        var height = (window.innerHeight > 0) ? window.innerHeight : screen.height;
-       // console.log(width)
-       
-        $("#main").height($(document).height()-100);
-        console.log($(window).height())
-        console.log($("#main").height())
-        //$("#main").width($(window).width());
-    });*/
-
-    </script>
-
 </head>
 <body ng-controller="FlotoCtrl">
 
     <div id="main">
         <carousel interval="myInterval">
             <slide ng-repeat="image in images" active="image.active">
-                <img id="main-img" ng-src="{{image.imageUrl}}" style="margin:auto;">
+                <img id="main-image" ng-src="{{image.imageUrl}}" style="margin:auto;">
                 <div class="carousel-caption">
                     <h4>{{image.name}}</h4>
                 </div>
@@ -45,18 +29,14 @@
             <div class="row-fluid">
                 <ul class="thumbnails">
                     <li ng-repeat="image in images" class="span2">
-                        <a href="#" class="thumbnail thumbnail-{{image.active}}" ng-disabled="image.active" ng-click="image.active = true" ng-click="scroll">
+                        <a href="#" class="thumbnail thumbnail-{{image.active}}" ng-disabled="image.active" ng-click="displayImage(image)">
                             <img ng-src="{{image.imageUrl}}">
-                            <!--<a href="#/phones/{{phone.id}}">{{phone.name}}</a>-->
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-
-
-
 
     <!-- In production use:
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>

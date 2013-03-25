@@ -1,17 +1,20 @@
-/*body, html{
-  height: 100%;
-}
-
-#main {
-	height: 100%;
-} */
-#main-img{
+#main-image{
 	max-height: 78%;
 }
 
 .thumbnail-true {
 	border-color: rgb(138, 135, 135);
 	border-width: 2px;
+	margin-right: 12%
+}
+
+
+.thumbnail-false {
+	width: 70%;
+	margin-top: 5%;
+	margin-left: 12%;
+	margin-right: 12%
+
 }
 
 .row-fluid ul.thumbnails li.span2:nth-child(6n + 7) { margin-left : 0px; }
