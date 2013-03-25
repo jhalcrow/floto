@@ -5,15 +5,15 @@
 .thumbnail-true {
 	border-color: rgb(138, 135, 135);
 	border-width: 2px;
-	margin-right: 12%
+	margin-right: 10%
 }
 
 
 .thumbnail-false {
-	width: 70%;
+	width: 60%;
 	margin-top: 5%;
-	margin-left: 12%;
-	margin-right: 12%
+	margin-left: 10%;
+	margin-right: 10%
 
 }
 
