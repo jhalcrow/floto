@@ -14,12 +14,18 @@
 
 
     <script>
-        var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    /*
+    $(document).ready(function() {
+        //var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
         var height = (window.innerHeight > 0) ? window.innerHeight : screen.height;
-        console.log(width)
-        console.log(height)
-        $("#main").height($(window).height());
-        $("#main").width($(window).width());
+       // console.log(width)
+       
+        $("#main").height($(document).height()-100);
+        console.log($(window).height())
+        console.log($("#main").height())
+        //$("#main").width($(window).width());
+    });*/
+
     </script>
 
 </head>
@@ -28,7 +34,7 @@
     <div id="main">
         <carousel interval="myInterval">
             <slide ng-repeat="image in images" active="image.active">
-                <img ng-src="{{image.imageUrl}}" style="margin:auto;">
+                <img id="main-img" ng-src="{{image.imageUrl}}" style="margin:auto;">
                 <div class="carousel-caption">
                     <h4>{{image.name}}</h4>
                 </div>

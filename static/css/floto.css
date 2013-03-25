@@ -5,6 +5,10 @@
 #main {
 	height: 100%;
 } */
+#main-img{
+	max-height: 78%;
+}
+
 .thumbnail-true {
 	border-color: rgb(138, 135, 135);
 	border-width: 2px;
