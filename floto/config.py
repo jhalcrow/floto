@@ -7,7 +7,7 @@ class Config(object):
     SECRET_KEY = os.urandom(24)
 
 class ProductionConfig(Config):
-    pass
+    APPLICATION_ROOT = '/floto/api'
 
 class DevelopmentConfig(Config):
     DEBUG = True
