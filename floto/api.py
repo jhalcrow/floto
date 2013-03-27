@@ -46,8 +46,11 @@ def get_tip(event_id):
         sort=[('ts', pymongo.DESCENDING)]).limit(n)
     response = {'photos': 
         [{'name': p['from_name'],
-           'ts': p['ts'], 
-          'id': str(p['_id'])} for p in recent]
+          'ts': p['ts'],
+          'caption': p['subject'],
+          'url': url_for('.get_photo', photo_id=str(p['_id']), _external=True),
+          'id': str(p['_id'])} for p in recent
+        ]
     }
     if response['photos']:
         session['last_ts'] = response['photos'][0]['ts']
@@ -69,7 +72,8 @@ def get_new(event_id):
     response = {'photos': 
         [{'name': p['from_name'],
           'ts': p['ts'],
-          'url': url_for('.get_photo', photo_id=str(p['_id'])),
+          'caption': p['subject'],
+          'url': url_for('.get_photo', photo_id=str(p['_id']), _external=True),
           'id': str(p['_id'])} for p in recent]
     }
     if response['photos']:
