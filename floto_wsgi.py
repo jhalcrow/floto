@@ -11,7 +11,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, PROJECT_ROOT)
 
 from floto import create_app, config
-application = create_app(config.DevelopmentConfig())
+application = create_app(config.ProductionConfig())
 from werkzeug.contrib.fixers import ProxyFix
 application.wsgi_app = ProxyFix(application.wsgi_app)
 
