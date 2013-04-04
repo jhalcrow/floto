@@ -1,4 +1,5 @@
 from flask import current_app
+import StringIO
 import base64
 import bson
 import uuid
