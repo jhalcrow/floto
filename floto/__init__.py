@@ -10,6 +10,6 @@ def create_app(config):
     if not app.extensions:
         app.extensions = {}
 
-    app.extensions['mongo'] = pymongo.Connection(app.config['MONGO_HOST']).floto
+    app.extensions['mongo'] = pymongo.Connection(app.config['MONGO_HOST'])[app.config['MONGO_DATABASE']]
 
     return app

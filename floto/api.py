@@ -29,7 +29,13 @@ def get_photo(photo_id):
     Return a particular image
     '''
     db = current_app.extensions['mongo']
-    photo = db.photos.find_one({'_id': uuid.UUID(photo_id)})
+    try:
+        _id = uuid.UUID(photo_id)
+    except ValueError:
+        current_app.logger.info("Improper uuid requested %s" % photo_id)
+        abort(404)
+
+    photo = db.photos.find_one({'_id': _id})
     if photo:
         return send_file(StringIO(photo['raw']), mimetype=photo['type'])
     else:
