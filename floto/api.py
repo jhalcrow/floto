@@ -20,7 +20,7 @@ def recieve_photo(event_id):
         return ""
     for message_event in json.loads(request.form['mandrill_events']):
         db = current_app.extensions['mongo']
-        store_image(event_id, message_event)
+        store_image(db, event_id, message_event)
     return "OK"
 
 @api.route("/photos/<photo_id>")

@@ -4,6 +4,8 @@ import bson
 import pymongo
 import uuid
 from floto.config import TestingConfig
+from floto.util import store_image
+import base64
 
 class DisplayTest(unittest.TestCase):
 
@@ -26,8 +28,31 @@ class DisplayTest(unittest.TestCase):
         rv = client.get("/photos/not_real")
         self.assertEquals(rv.status_code, 404)
 
-    def test_incoming_photo(self):
-        pass
+    def test_store_image(self):
+        photo_raw = open('test/indian.jpg').read()
+        mandrill_event = { 
+            'msg':{
+                'from_name': 'Test name',
+                'subject': 'Test subject',
+                'text': 'Test text',
+                'attachments': {
+                    'indian.jpg': 
+                        { 'content':base64.b64encode(photo_raw),
+                          'type': 'image/jpeg'
+                        }
+                }
+            },
+            'ts': 1
+        }
+        
+        store_image(self.db, 'test', mandrill_event)
+
+        stored = self.db.photos.find_one()
+        expected_raw = open('test/indian-expected.jpg').read()
+        self.assertEquals(stored['event'], 'test')
+        self.assertEquals(str(stored['raw']), expected_raw)
+
+
 
 def insert_mock_photo(db, name, subject, ts):
     _id = uuid.uuid4()
