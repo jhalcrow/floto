@@ -27,7 +27,8 @@ def store_image(db, event, mandrill_event):
             img = orient_img(img)
             
             img_buf = StringIO.StringIO()
-            img.save(img_buf, img.format)
+            format = img.format or 'jpg'
+            img.save(img_buf, format)
 
             photo['raw'] = bson.Binary(img_buf.getvalue())
             photo['type'] = attachment['type']
