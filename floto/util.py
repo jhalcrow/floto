@@ -27,7 +27,7 @@ def store_image(db, event, mandrill_event):
             img = orient_img(img)
             
             img_buf = StringIO.StringIO()
-            format = img.format or 'jpg'
+            format = img.format or 'JPEG'
             img.save(img_buf, format)
 
             photo['raw'] = bson.Binary(img_buf.getvalue())
