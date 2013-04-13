@@ -8,7 +8,9 @@ def create_app(config):
     app.config.from_object(config)
     if 'FLOTO_CONFIG' in os.environ:
         app.config.from_envvar('FLOTO_CONFIG')
-    app.register_blueprint(api)
+    api_prefix = app.config['API_PREFIX']
+
+    app.register_blueprint(api, url_prefix=api_prefix)
     if not app.extensions:
         app.extensions = {}
 
