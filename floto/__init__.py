@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from floto.api import api
 import pymongo
@@ -5,7 +6,8 @@ import pymongo
 def create_app(config):
     app = Flask(__name__)
     app.config.from_object(config)
-    app.config.from_envvar('FLOTO_CONFIG')
+    if 'FLOTO_CONFIG' in os.environ:
+        app.config.from_envvar('FLOTO_CONFIG')
     app.register_blueprint(api)
     if not app.extensions:
         app.extensions = {}
