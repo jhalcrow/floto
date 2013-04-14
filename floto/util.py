@@ -25,6 +25,7 @@ def store_image(db, event, mandrill_event):
             raw_bytes = base64.b64decode(attachment['content'])
             img = Image.open(StringIO.StringIO(raw_bytes))
             img = orient_img(img)
+            img = resize_img(img)
             
             img_buf = StringIO.StringIO()
             format = img.format or 'JPEG'
@@ -65,5 +66,5 @@ def resize_img(img, width=1280):
     '''
     orig_w, orig_h = img.size
     scale = float(width) / orig_w
-    return img.resize((width, scale*orig_h), Image.ANTIALIAS)
+    return img.resize((width, int(scale*orig_h)), Image.ANTIALIAS)
 

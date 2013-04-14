@@ -19,13 +19,13 @@ class DisplayTest(unittest.TestCase):
     def test_get_photo(self):
         _id = insert_mock_photo(self.db, 'Name', 'subject', 1)
         client = self.app.test_client()
-        rv = client.get('/photos/%s' % _id)
+        rv = client.get('/floto/api/photos/%s' % _id)
         self.assertEquals(rv.data, '1234')
         self.assertEquals(rv.content_type, 'image/jpeg')
 
     def test_no_photo(self):
         client = self.app.test_client()
-        rv = client.get("/photos/not_real")
+        rv = client.get("/floto/api/photos/not_real")
         self.assertEquals(rv.status_code, 404)
 
     def test_store_image(self):
