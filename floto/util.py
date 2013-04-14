@@ -60,11 +60,13 @@ def orient_img(img):
 
     return img
 
-def resize_img(img, width=1280):
+def resize_img(img, width=1280, max_height=720):
     '''
     Scales an image to the specified width
     '''
     orig_w, orig_h = img.size
-    scale = float(width) / orig_w
-    return img.resize((width, int(scale*orig_h)), Image.ANTIALIAS)
+    scale_w = float(width) / orig_w
+    scale_h = float(max_height) / orig_h
+    scale = min(scale_w, scale_h)
+    return img.resize((int(scale*orig_w), int(scale*orig_h)), Image.ANTIALIAS)
 
