@@ -6,7 +6,7 @@ angular.module('flotoApp', ['ui.bootstrap']);
 
 function FlotoCtrl($scope, $http) {
     $scope.myInterval = 30000;
-    $http.get('/floto/api/events/test/tip').success(function(data) {
+    $http.get('/floto/api/events/test/tip?n=12').success(function(data) {
         $scope.images = data.photos;
         console.log(data);
         window.setInterval(function(){

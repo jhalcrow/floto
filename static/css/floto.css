@@ -1,20 +1,48 @@
+body {
+	background-color: #333;
+}
 #main-image{
-	max-height: 78%;
+	margin-top: 50px;
+	min-height: 720px;
+	max-height: 720px;
+}
+
+.carousel-inner {
+	margin-top: 60px;
+}
+.row-fluid {
+	margin-left: 0px;
+}
+
+.thumbnails>li {
+	margin-left: 5px;
+}
+
+.thumbnail .span1 {
+	padding: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
 }
 
 .thumbnail-true {
+	width: 175px;
 	border-color: rgb(138, 135, 135);
-	border-width: 2px;
-	margin-right: 10%
+	margin-left: 0px;
+	margin-right: 0px;
+	padding: 0px;*/
+
 }
 
-
 .thumbnail-false {
-	width: 60%;
-	margin-top: 5%;
-	margin-left: 10%;
-	margin-right: 10%
+	width: 155px;
+	margin-top: 80px;
+	margin-left: 0px;
+	margin-right: 0px;
+	padding: 0px; 
+}
 
+.thumbnail-false img {
+	opacity: 0.4;
 }
 
 .row-fluid ul.thumbnails li.span2:nth-child(6n + 7) { margin-left : 0px; }
