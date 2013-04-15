@@ -1,12 +1,15 @@
 from flask import current_app
+from datetime import datetime
 import StringIO
 import base64
 import bson
 import uuid
 from PIL import Image
+from boto.s3.key import Key
+
 ORIENTATION_TAG = 0x0112 # EXIF Orientation tag
 
-def store_image(db, event, mandrill_event):
+def store_image(db, base_url, event, mandrill_event):
     email = mandrill_event['msg']
 
     default = lambda obj, key, val: obj[key] if key in obj else val
@@ -16,26 +19,40 @@ def store_image(db, event, mandrill_event):
             photo = {
                 '_id': uuid.uuid4(),
                 'event': event,
-                'ts': mandrill_event['ts'],
-                'from_name': default(email, 'from_name', ''),
-                'from_email': default(email, 'from_email', ''),
-                'subject': email['subject'],
-                'text': email['text'],
+                'ts': datetime.fromtimestamp(mandrill_event['ts']),
+                'name': default(email, 'from_name', ''),
+                'username': default(email, 'from_email', ''),
+                'caption': email['subject'],
+                'source': 'email',
             }
-            raw_bytes = base64.b64decode(attachment['content'])
-            img = Image.open(StringIO.StringIO(raw_bytes))
-            img = orient_img(img)
-            img = resize_img(img)
-            
-            img_buf = StringIO.StringIO()
-            format = img.format or 'JPEG'
-            img.save(img_buf, format)
+            photo_id = str(photo['_id'])
+            photo['url'] = base_url + photo_id
 
-            photo['raw'] = bson.Binary(img_buf.getvalue())
-            photo['type'] = attachment['type']
+            raw_bytes = base64.b64decode(attachment['content'])
+            processed_bytes = process_image_bytes(raw_bytes)
+            s3upload(processed_bytes, photo_id)
             db.photos.save(photo)
+
     else:
         current_app.logger.warning('No attachments on email.')
+
+def s3upload(bytes, key):
+    bucket = current_app.extensions['s3_bucket']
+    k = Key(bucket)
+    k.key = key
+    k.set_contents_from_string(bytes)
+    k.make_public()
+
+def process_image_bytes(bytes):
+    img = Image.open(StringIO.StringIO(bytes))
+    img = orient_img(img)
+    img = resize_img(img)
+            
+    img_buf = StringIO.StringIO()
+    format = img.format or 'JPEG'
+    img.save(img_buf, format)
+    return img_buf.getvalue()
+
 
 def orient_img(img):
     '''

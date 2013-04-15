@@ -4,32 +4,25 @@ import bson
 import pymongo
 import uuid
 from floto.config import TestingConfig
-from floto.util import store_image
+from datetime import datetime
+import floto.util
 import base64
+from mock import patch, Mock
+
 
 class DisplayTest(unittest.TestCase):
 
     def setUp(self):
-        self.app = floto.create_app(TestingConfig)
+        with patch('floto.s3_setup'):
+            floto.s3_setup.return_value = (Mock(), Mock())
+            self.app = floto.create_app(TestingConfig)
         self.db = pymongo.Connection().test
 
     def tearDown(self):
         self.db.photos.remove()
 
-    def test_get_photo(self):
-        _id = insert_mock_photo(self.db, 'Name', 'subject', 1)
-        client = self.app.test_client()
-        rv = client.get('/floto/api/photos/%s' % _id)
-        self.assertEquals(rv.data, '1234')
-        self.assertEquals(rv.content_type, 'image/jpeg')
-
-    def test_no_photo(self):
-        client = self.app.test_client()
-        rv = client.get("/floto/api/photos/not_real")
-        self.assertEquals(rv.status_code, 404)
-
     def test_store_image(self):
-        photo_raw = open('test/indian.jpg').read()
+        
         mandrill_event = { 
             'msg':{
                 'from_name': 'Test name',
@@ -37,7 +30,7 @@ class DisplayTest(unittest.TestCase):
                 'text': 'Test text',
                 'attachments': {
                     'indian.jpg': 
-                        { 'content':base64.b64encode(photo_raw),
+                        { 'content':'original',
                           'type': 'image/jpeg'
                         }
                 }
@@ -45,12 +38,27 @@ class DisplayTest(unittest.TestCase):
             'ts': 1
         }
         
-        store_image(self.db, 'test', mandrill_event)
+        with patch('floto.util.process_image_bytes'), patch('floto.util.s3upload'):
+            mock_bytes = Mock()
+            floto.util.process_image_bytes.return_value = 'processed'
+            floto.util.store_image(self.db, 'http://test/', 'test', mandrill_event)
+            stored = self.db.photos.find_one()
+            
+            photo_id = str(stored['_id'])
+            floto.util.s3upload.assert_called_with('processed', photo_id)
+            
+            self.assertEquals(stored['event'], 'test')
+            self.assertEquals(stored['name'], 'Test name')
+            self.assertEquals(stored['caption'], 'Test subject')
+            self.assertEquals(stored['ts'], datetime.fromtimestamp(1))
+            self.assertEquals(stored['url'], 'http://test/%s' % photo_id)
 
-        stored = self.db.photos.find_one()
+
+    def test_process_image(self):
+        photo_raw = open('test/indian.jpg').read()
         expected_raw = open('test/indian-expected.jpg').read()
-        self.assertEquals(stored['event'], 'test')
-        self.assertEquals(str(stored['raw']), expected_raw)
+        out = floto.util.process_image_bytes(photo_raw)
+        self.assertEquals(out, expected_raw)
 
 
 

@@ -2,6 +2,8 @@ from flask import Blueprint, request, current_app, session,\
  jsonify, send_file, abort, url_for
 from StringIO import StringIO
 import json
+import time
+from datetime import datetime
 import pymongo
 from bson import ObjectId
 import uuid
@@ -20,26 +22,10 @@ def recieve_photo(event_id):
         return ""
     for message_event in json.loads(request.form['mandrill_events']):
         db = current_app.extensions['mongo']
-        store_image(db, event_id, message_event)
+        base_url = current_app.config['S3_BASE_URL']
+        store_image(db, base_url, event_id, message_event)
     return "OK"
 
-@api.route("/photos/<photo_id>")
-def get_photo(photo_id):
-    '''
-    Return a particular image
-    '''
-    db = current_app.extensions['mongo']
-    try:
-        _id = uuid.UUID(photo_id)
-    except ValueError:
-        current_app.logger.info("Improper uuid requested %s" % photo_id)
-        abort(404)
-
-    photo = db.photos.find_one({'_id': _id})
-    if photo:
-        return send_file(StringIO(photo['raw']), mimetype=photo['type'])
-    else:
-        abort(404) 
 
 @api.route("/events/<event_id>/tip")
 def get_tip(event_id):
@@ -51,10 +37,10 @@ def get_tip(event_id):
     recent = db.photos.find({'event': event_id}, 
         sort=[('ts', pymongo.DESCENDING)]).limit(n)
     response = {'photos': 
-        [{'name': p['from_name'],
-          'ts': p['ts'],
-          'caption': p['subject'],
-          'url': url_for('.get_photo', photo_id=str(p['_id']), _external=True),
+        [{'name': p['name'],
+          'ts': time.mktime(p['ts'].timetuple()),
+          'caption': p['caption'],
+          'url': p['url'],
           'id': str(p['_id'])} for p in recent
         ]
     }
@@ -73,14 +59,15 @@ def get_new(event_id):
     n = int(request.args.get('n', 6))
     query = {'event': event_id}
     if 'last_ts' in session:
-        query['ts'] = {'$gt': session['last_ts']}
+        query['ts'] = {'$gt': datetime.fromtimestamp(session['last_ts'])}
     recent = db.photos.find(query,sort=[('ts', pymongo.DESCENDING)]).limit(n)
     response = {'photos': 
-        [{'name': p['from_name'],
-          'ts': p['ts'],
-          'caption': p['subject'],
-          'url': url_for('.get_photo', photo_id=str(p['_id']), _external=True),
-          'id': str(p['_id'])} for p in recent]
+        [{'name': p['name'],
+          'ts': time.mktime(p['ts'].timetuple()),
+          'caption': p['caption'],
+          'url': p['url'],
+          'id': str(p['_id'])} for p in recent
+        ]
     }
     if response['photos']:
         session['last_ts'] = response['photos'][0]['ts']
