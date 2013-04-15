@@ -16,26 +16,27 @@
 <body ng-controller="FlotoCtrl">
 
     <div id="main">
-        <carousel interval="myInterval">
-            <slide ng-repeat="image in images" active="image.active">
-                <img id="main-image" ng-src="{{image.url}}" style="margin:auto;">
-                <div class="carousel-caption">
-                    <h4>{{image.name}}</h4>
-                </div>
-            </slide>
-        </carousel>
+        <div class="row-fluid">
+                <carousel interval="myInterval">
+                    <slide ng-repeat="image in images" active="image.active">
+                        <img id="main-image" ng-src="{{image.url}}" style="margin:auto;">
+                        <div class="carousel-caption">
+                            <h4>{{image.caption}} by {{image.name}}</h4>
+                        </div>
+                    </slide>
+                </carousel>
 
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <ul class="thumbnails">
-                    <li ng-repeat="image in images" class="span2">
-                        <a href="#" class="thumbnail thumbnail-{{image.active}}" ng-disabled="image.active" ng-click="displayImage(image)">
-                            <img ng-src="{{image.url}}">
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+                <div class="container-fluid">
+                    <div class="row-fluid">
+                        <ul class="thumbnails">
+                            <li ng-repeat="image in images">
+                                <a href="#" class="thumbnail thumbnail-{{image.active}}" ng-disabled="image.active" ng-click="displayImage(image)">
+                                    <img ng-src="{{image.url}}">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
     </div>
 
     <!-- In production use:
