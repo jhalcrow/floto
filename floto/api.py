@@ -63,7 +63,7 @@ def get_new(event_id):
     n = int(request.args.get('n', 1))
     query = {'event': event_id}
     if 'last_ts' in session:
-        query['ts'] = {'$gt': datetime.fromtimestamp(session['last_ts'])}
+        query['ts'] = {'$gt': session['last_ts']}
     recent = db.photos.find(query,sort=[('ts', pymongo.ASCENDING)]).limit(n)
     if recent.count():
         session['last_ts'] = max([p['ts'] for p in recent]) 
@@ -80,7 +80,7 @@ def get_new(event_id):
           'id': str(p['_id'])} for p in recent
         ]
     }
-    
+
     return jsonify(response)
 
 @api.route("/events/<event_id>/instagram_realtime", methods=["GET", "POST"])
