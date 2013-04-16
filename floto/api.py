@@ -40,7 +40,7 @@ def recieve_photo(event_id):
     return "OK"
 
 
-@api.route("/events/<event_id>/tip")
+@api.route("/events/<event_id>/tip", methods=["GET", "OPTIONS"])
 @crossdomain(origin='*')
 def get_tip(event_id):
     '''
@@ -61,7 +61,7 @@ def get_tip(event_id):
     return jsonify(response)
     
 
-@api.route("/events/<event_id>/new")
+@api.route("/events/<event_id>/new", methods=["GET", "OPTIONS"])
 @crossdomain(origin='*')
 def get_new(event_id):
     '''
