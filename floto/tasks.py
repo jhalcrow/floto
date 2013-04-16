@@ -29,7 +29,7 @@ def poll_instagram(tag, instagram_client_id, db, event_id):
             'username': photo.user.username,
             'url': photo.get_standard_resolution_url(),
             'source': 'instagram',
-            'ts': datetime.utcnow()
+            'ts': photo.created_time,
         }
 
         db.photos.save(entry)
