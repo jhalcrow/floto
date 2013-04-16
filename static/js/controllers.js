@@ -7,13 +7,12 @@ function FlotoCtrl($scope, $http) {
     $scope.myInterval = -1;
     $http.get('/floto/api/events/test/tip?n=11').success(function(data) {
         $scope.images = data.photos;
-
+     
         window.setInterval(function(){
             $http.get('/floto/api/events/test/new').success(function(data) {
                 for(var photo in data.photos) {
                     if($scope.images[0].active === true) {
                         $scope.images[1].active = true;
-                        $scope.images[0].active = false;
                         $scope.images.push(data.photos[photo]);
                         $scope.images.shift();
                     } else {
@@ -22,7 +21,7 @@ function FlotoCtrl($scope, $http) {
                     }                 
                 }
             })
-        }, 5000);
+        }, 7000);
     });
 
     $scope.displayImage = function(image) {
