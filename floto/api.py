@@ -60,7 +60,7 @@ def get_new(event_id):
     '''
     
     db = current_app.extensions['mongo']
-    n = int(request.args.get('n', 6))
+    n = int(request.args.get('n', 1))
     query = {'event': event_id}
     if 'last_ts' in session:
         query['ts'] = {'$gt': datetime.fromtimestamp(session['last_ts'])}
