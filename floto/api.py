@@ -7,6 +7,7 @@ from datetime import datetime
 import pymongo
 from bson import ObjectId
 import uuid
+from instagram import subscriptions
 from .util import store_image
 
 api = Blueprint('api', __name__)
@@ -82,9 +83,9 @@ def on_realtime_callback():
         return challenge
     else:
         x_hub_signature = request.headers.get('X-Hub-Signature')
-        raw_response = request.body.read()
         try:
             reactor = current_app.extensions['instagram_reactor']
             reactor.process(current_app.config['INSTAGRAM_CLIENT_SECRET'], request.data, x_hub_signature)
         except subscriptions.SubscriptionVerifyError:
             current_app.logger.error("Signature mismatch")
+            return 'Bad request'
