@@ -12,8 +12,8 @@ function FlotoCtrl($scope, $http) {
         window.setInterval(function(){
             $http.get('/floto/api/events/test/new').success(function(data) {
                 for(var photo in data.photos) {
-                    $scope.images.shift();
-                    $scope.images.push(data.photos[photo]);                   
+                    $scope.images.unshift(data.photos[photo]);
+                    $scope.images.pop();                   
                 }
             })
         }, 5000);
