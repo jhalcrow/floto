@@ -91,7 +91,6 @@ def get_new(event_id):
         response['photos'].append(mongo_to_message(p))
         session['cur'].append(p['_id'])
         session['cur'] = session['cur'][1:]
-        current_app.logger.debug(session['cur'])
 
     return jsonify(response)
 
