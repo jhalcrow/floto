@@ -9,6 +9,7 @@ from bson import ObjectId
 import uuid
 from instagram import subscriptions
 from .util import store_image
+from .tasks import process_instagram_updates, verify_instagram_sig
 
 api = Blueprint('api', __name__)
 
@@ -74,8 +75,8 @@ def get_new(event_id):
         session['last_ts'] = response['photos'][0]['ts']
     return jsonify(response)
 
-@api.route("/instagram_realtime", methods=["GET", "POST"])
-def on_realtime_callback():
+@api.route("/events/<event_id>/instagram_realtime", methods=["GET", "POST"])
+def on_realtime_callback(event_id):
     mode = request.args.get("hub.mode")
     challenge = request.args.get("hub.challenge")
     verify_token = request.args.get("hub.verify_token")
@@ -83,9 +84,9 @@ def on_realtime_callback():
         return challenge
     else:
         x_hub_signature = request.headers.get('X-Hub-Signature')
-        try:
-            reactor = current_app.extensions['instagram_reactor']
-            reactor.process(current_app.config['INSTAGRAM_CLIENT_SECRET'], request.data, x_hub_signature)
-        except subscriptions.SubscriptionVerifyError:
+        if verify_instagram_sig(current_app.config['INSTAGRAM_CLIENT_SECRET'], request.data, x_hub_signature):
+            process_instagram_updates(event_id, request.json)
+            return 'OK'
+        else:
             current_app.logger.error("Signature mismatch")
             return 'Bad request'
