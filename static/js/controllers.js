@@ -4,7 +4,7 @@
 angular.module('flotoApp', ['ui.bootstrap']);
 
 function FlotoCtrl($scope, $http) {
-    $scope.myInterval = 50000000000;
+    $scope.myInterval = -1;
     $http.get('/floto/api/events/test/tip?n=11').success(function(data) {
         $scope.images = data.photos;
 
@@ -12,7 +12,7 @@ function FlotoCtrl($scope, $http) {
             $http.get('/floto/api/events/test/new').success(function(data) {
                 for(var photo in data.photos) {
                     $scope.images.push(data.photos[photo]);
-                    $scope.images[1].active = true
+                    $scope.images[1].active = true;
                     $scope.images.shift();                   
                 }
             })
