@@ -71,7 +71,7 @@ def get_new(event_id):
     db = current_app.extensions['mongo']
     n = int(request.args.get('n', 1))
     query = {'event': event_id, '_id': {'$nin': session['cur']}}
-    
+
     if 'last_ts' in session:
         query['ts'] = {'$gt': session['last_ts']}
     recent = db.photos.find(query,sort=[('ts', pymongo.ASCENDING)]).limit(n)
@@ -79,7 +79,11 @@ def get_new(event_id):
         session['last_ts'] = max([p['ts'] for p in recent]) 
 
     if recent.count() < n:
-        rand_photos = db.photos.find({'random': {'$gte': random.random()}}, sort=[('random', 1)]).limit(n-recent.count())
+        rand_photos = db.photos.find(
+            {
+            'random': {'$gte': random.random()},
+            '_id': {'$nin': session['cur']},
+            }, sort=[('random', 1)]).limit(n-recent.count())
         recent = itertools.chain(recent, rand_photos)
     
     response = {'photos':[]}
