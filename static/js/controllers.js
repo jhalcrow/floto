@@ -12,7 +12,7 @@ function FlotoCtrl($scope, $http) {
             $http.get('/floto/api/events/test/new').success(function(data) {
                 for(var photo in data.photos) {
                     console.log($scope.images[0]);
-                    if($scope.images[$scope.images.length].active === false) {
+                    if($scope.images[$scope.images.length-1].active === false) {
                         $scope.images.unshift(data.photos[photo]);
                         $scope.images.pop();                   
                     }
