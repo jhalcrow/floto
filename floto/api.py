@@ -10,7 +10,7 @@ import pymongo
 from bson import ObjectId
 import uuid
 from instagram import subscriptions
-from .util import store_image
+from .util import store_image, crossdomain
 from .tasks import process_instagram_updates, verify_instagram_sig
 
 api = Blueprint('api', __name__)
@@ -32,6 +32,7 @@ def recieve_photo(event_id):
 
 
 @api.route("/events/<event_id>/tip")
+@crossdomain(origin='*')
 def get_tip(event_id):
     '''
     Get the metadata n most recent photos
@@ -54,6 +55,7 @@ def get_tip(event_id):
     
 
 @api.route("/events/<event_id>/new")
+@crossdomain(origin='*')
 def get_new(event_id):
     '''
     Get any new photos since the last call, up to n
