@@ -5,6 +5,7 @@ import instagram
 from threading import Thread
 import hmac
 import hashlib
+import random
 
 next_tag_update = None
 
@@ -22,14 +23,18 @@ def poll_instagram(tag, instagram_client_id, db, event_id):
 
     photos, next = instagram_api.tag_recent_media(tag_name=tag, client_id=instagram_client_id)
     for photo in photos:
+
         entry = {
+            '_id': photo.id,
             'name': photo.user.full_name,
             'event': event_id,
             'caption': photo.caption.text if photo.caption else '',
             'username': photo.user.username,
             'url': photo.get_standard_resolution_url(),
             'source': 'instagram',
+            'instagram_id': photo.id,
             'ts': photo.created_time,
+            'random': random.random(),
         }
 
         db.photos.save(entry)

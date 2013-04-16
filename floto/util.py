@@ -4,6 +4,7 @@ import StringIO
 import base64
 import bson
 import uuid
+import random
 from PIL import Image
 from boto.s3.key import Key
 
@@ -24,6 +25,7 @@ def store_image(db, base_url, event, mandrill_event):
                 'username': default(email, 'from_email', ''),
                 'caption': email['subject'],
                 'source': 'email',
+                'random': random.random(),
             }
             photo_id = str(photo['_id'])
             photo['url'] = base_url + photo_id
