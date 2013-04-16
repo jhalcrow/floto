@@ -12,12 +12,11 @@ function FlotoCtrl($scope, $http) {
             $http.get('/floto/api/events/test/new').success(function(data) {
                 for(var photo in data.photos) {
                     if($scope.images[0].active === true) {
-                        console.log("first.")
                         $scope.images[1].active = true;
                         window.setTimeout(function() {
                             $scope.images.push(data.photos[photo]);
                             $scope.images.shift();                           
-                        }, 500);
+                        }, 300);
 
                     } else {
                         $scope.images.push(data.photos[photo]);
@@ -25,7 +24,7 @@ function FlotoCtrl($scope, $http) {
                     }                 
                 }
             })
-        }, 7000);
+        }, 5000);
     });
 
     $scope.displayImage = function(image) {
