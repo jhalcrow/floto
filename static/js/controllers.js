@@ -5,19 +5,24 @@ angular.module('flotoApp', ['ui.bootstrap']);
 
 function FlotoCtrl($scope, $http) {
     $scope.myInterval = -1;
-    $http.get('/floto/api/events/test/tip?n=11').success(function(data) {
+    $http.get('http://www.ournewballandchain.com/floto/api/events/test/tip?n=11').success(function(data) {
         $scope.images = data.photos;
 
         window.setInterval(function(){
-            $http.get('/floto/api/events/test/new').success(function(data) {
+            $http.get('http://www.ournewballandchain.com/floto/api/events/test/new').success(function(data) {
                 for(var photo in data.photos) {
-                    $scope.images[0].active = false;
-                    $scope.images[1].active = true;
-                    $scope.images.push(data.photos[photo]);
-                    $scope.images.shift();                   
+                    if($scope.images[0].active === true) {
+                        $scope.images[1].active = true;
+                        $scope.images[0].active = false;
+                        $scope.images.push(data.photos[photo]);
+                        $scope.images.shift();
+                    } else {
+                        $scope.images.push(data.photos[photo]);
+                        $scope.images.shift();                       
+                    }                 
                 }
             })
-        }, 3000);
+        }, 5000);
     });
 
     $scope.displayImage = function(image) {
