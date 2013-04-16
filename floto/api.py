@@ -72,3 +72,19 @@ def get_new(event_id):
     if response['photos']:
         session['last_ts'] = response['photos'][0]['ts']
     return jsonify(response)
+
+@api.route("/instagram_realtime", methods=["GET", "POST"])
+def on_realtime_callback():
+    mode = request.args.get("hub.mode")
+    challenge = request.args.get("hub.challenge")
+    verify_token = request.args.get("hub.verify_token")
+    if challenge: 
+        return challenge
+    else:
+        x_hub_signature = request.headers.get('X-Hub-Signature')
+        raw_response = request.body.read()
+        try:
+            reactor = current_app.extensions['instagram_reactor']
+            reactor.process(current_app.config['INSTAGRAM_CLIENT_SECRET'], request.data, x_hub_signature)
+        except subscriptions.SubscriptionVerifyError:
+            current_app.logger.error("Signature mismatch")
