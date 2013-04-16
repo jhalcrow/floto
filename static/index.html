@@ -17,6 +17,7 @@
 
     <div id="main">
         <div class="row-fluid">
+            <div class="span">
                 <carousel interval="myInterval">
                     <slide ng-repeat="image in images" active="image.active">
                         <img id="main-image" ng-src="{{image.url}}" style="margin:auto;">
@@ -37,13 +38,12 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+        </div>
     </div>
 
     <!-- In production use:
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
     -->
-
-    <!--    <script src="js/app.js"></script>
-    <script src="js/services.js"></script> -->
 </body>
 </html>

@@ -6,7 +6,7 @@ angular.module('flotoApp', ['ui.bootstrap']);
 
 function FlotoCtrl($scope, $http) {
     $scope.myInterval = 30000;
-    $http.get('/floto/api/events/test/tip?n=12').success(function(data) {
+    $http.get('/floto/api/events/test/tip?n=11').success(function(data) {
         $scope.images = data.photos;
         console.log(data);
         window.setInterval(function(){
@@ -19,16 +19,7 @@ function FlotoCtrl($scope, $http) {
         }, 5000);
     });
 
-
-/*
     $scope.displayImage = function(image) {
-        while($scope.images.indexOf(image) !== 0) {
-            console.log($scope.images);
-            var tempImage = $scope.images[0];
-            $scope.images.shift();
-            $scope.images.push(tempImage);
-        }
         image.active = true;    
-        console.log("IMAGE");
-    }*/
+    }
 }
