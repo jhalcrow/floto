@@ -53,5 +53,7 @@ application.wsgi_app = ReverseProxied(application.wsgi_app)
 def setup_logging():
     application.logger.addHandler(logging.StreamHandler())
     application.logger.setLevel(logging.DEBUG)
-    application.logger.addHandler(logging.FileHandler('/tmp/floto.log'))
+    fh = logging.FileHandler('/tmp/floto.log')
+    fh.setLevel(logging.DEBUG)
+    application.logger.addHandler(fh)
 

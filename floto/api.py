@@ -15,6 +15,15 @@ from .tasks import process_instagram_updates, verify_instagram_sig
 
 api = Blueprint('api', __name__)
 
+def mongo_to_message(photo):
+
+    return {'name': photo['name'],
+            'ts': time.mktime(photo['ts'].timetuple()),
+            'caption': photo['caption'],
+            'url': photo['url'],
+            'id': str(photo['_id'])
+            }
+
 @api.route("/events/<event_id>/incoming", methods=["POST", "HEAD"])
 def recieve_photo(event_id):
     '''
@@ -41,14 +50,12 @@ def get_tip(event_id):
     n = int(request.args.get('n', 6))
     recent = db.photos.find({'event': event_id}, 
         sort=[('ts', pymongo.DESCENDING)]).limit(n)
-    response = {'photos': 
-        [{'name': p['name'],
-          'ts': time.mktime(p['ts'].timetuple()),
-          'caption': p['caption'],
-          'url': p['url'],
-          'id': str(p['_id'])} for p in recent
-        ]
-    }
+    response = {'photos':[]}
+    session['cur'] = []
+    for p in recent:
+        response['photos'].append(mongo_to_message(p))
+        session['cur'].append(p['_id'])
+
     if response['photos']:
         session['last_ts'] = response['photos'][0]['ts']
     return jsonify(response)
@@ -63,7 +70,8 @@ def get_new(event_id):
     
     db = current_app.extensions['mongo']
     n = int(request.args.get('n', 1))
-    query = {'event': event_id}
+    query = {'event': event_id, '_id': {'$nin': session['cur']}}
+
     if 'last_ts' in session:
         query['ts'] = {'$gt': session['last_ts']}
     recent = db.photos.find(query,sort=[('ts', pymongo.ASCENDING)]).limit(n)
@@ -71,17 +79,19 @@ def get_new(event_id):
         session['last_ts'] = max([p['ts'] for p in recent]) 
 
     if recent.count() < n:
-        rand_photos = db.photos.find({'random': {'$gte': random.random()}}, sort=[('random', 1)]).limit(n-recent.count())
+        rand_photos = db.photos.find(
+            {
+            'random': {'$gte': random.random()},
+            '_id': {'$nin': session['cur']},
+            }, sort=[('random', 1)]).limit(n-recent.count())
         recent = itertools.chain(recent, rand_photos)
-
-    response = {'photos': 
-        [{'name': p['name'],
-          'ts': time.mktime(p['ts'].timetuple()),
-          'caption': p['caption'],
-          'url': p['url'],
-          'id': str(p['_id'])} for p in recent
-        ]
-    }
+    
+    response = {'photos':[]}
+    for p in recent:
+        response['photos'].append(mongo_to_message(p))
+        session['cur'].append(p['_id'])
+        session['cur'] = session['cur'][1:]
+        current_app.logger.debug(session['cur'])
 
     return jsonify(response)
 
