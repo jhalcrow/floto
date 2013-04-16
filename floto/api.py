@@ -1,6 +1,8 @@
 from flask import Blueprint, request, current_app, session,\
  jsonify, send_file, abort, url_for
 from StringIO import StringIO
+import itertools
+import random
 import json
 import time
 from datetime import datetime
@@ -63,6 +65,11 @@ def get_new(event_id):
     if 'last_ts' in session:
         query['ts'] = {'$gt': datetime.fromtimestamp(session['last_ts'])}
     recent = db.photos.find(query,sort=[('ts', pymongo.DESCENDING)]).limit(n)
+
+    if recent.count() < n:
+        rand_photos = db.photos.find({'random': {'$gte': random.random()}}, sort=[('random', 1)]).limit(n-recent.count())
+        recent = itertools.chain(recent, rand_photos)
+
     response = {'photos': 
         [{'name': p['name'],
           'ts': time.mktime(p['ts'].timetuple()),
