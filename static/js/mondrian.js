@@ -14,7 +14,10 @@ var Mondrian = function(container, budget, images) {
   this.container_scale = container.offsetHeight;
   this.images = images;
   this.budget = budget;
-  this.draw_mondrian_inner(this.container, budget, images);
+  this.container.setAttribute('mondrian-budget', budget);
+  for(var img in images) {
+    this.add_image(images[img]);
+  }
 }
 
 Mondrian.prototype.p_replace = 0.3;
@@ -68,8 +71,17 @@ Mondrian.prototype.draw_mondrian_inner = function(par, budget, imgs) {
 
 Mondrian.prototype.add_image = function(src) {
   var tiles = document.querySelectorAll('.mondrian-tile');
-  var targ = random_select(tiles);
-  var par = targ.parentElement;
+  if (tiles.length > 0) {
+    var targ = random_select(tiles);
+    var par = targ.parentElement;
+  } else {
+    var par = this.container;
+    var imgNode = document.createElement('img');
+    imgNode.className = 'mondrian-tile';
+    imgNode.setAttribute('src', src);
+    par.appendChild(imgNode);
+    return;
+  }
 
   var width = par.offsetWidth;
   var height = par.offsetHeight;
@@ -78,10 +90,12 @@ Mondrian.prototype.add_image = function(src) {
 
   if(cost < budget) {
     var remaining = budget - cost;
-    var cut_frac = (0.5*Math.random() + 0.25)
+    var cut_frac = Math.random(); //(0.5*Math.random() + 0.25)
     var cut = cut_frac * (width + height) ;
     var child1 = document.createElement('div'),
         child2 = document.createElement('div');
+    child1.setAttribute('mondrian-budget', remaining);
+    child2.setAttribute('mondrian-budget', remaining);
 
     if(cut < width) {
       child1.setAttribute('class', 'mondrian-horiz-block-1 mondrian-block');
@@ -104,11 +118,9 @@ Mondrian.prototype.add_image = function(src) {
     imgNode.className = 'mondrian-tile';
     imgNode.setAttribute('src', src);
     child2.appendChild(imgNode);
-
-    var newPar = document.createElement('div');
-    newPar.className = par.className;
-    var grandPar = par.parentElement;
-    grandPar.replaceChild(par, newPar);
+//par.removeChild(targ);
+    par.appendChild(child1);
+    par.appendChild(child2);
 
   } else {
     targ.setAttribute('src', src);

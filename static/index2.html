@@ -1,0 +1,54 @@
+<html lang="en">
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/mondrian.css"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/mondrian.js"></script>
+  </head>
+  <body>
+    <div id="mondrian-container">
+    </div>
+
+    <script type="text/javascript">
+      var pokemon_imgs = [
+        'img/pokemon/abra.jpg',
+        'img/pokemon/chansey.jpg',
+        'img/pokemon/doduo.jpg',
+        'img/pokemon/farfetchd.jpg',
+        'img/pokemon/grimer.jpg',
+        'img/pokemon/kabuto.jpg',
+        'img/pokemon/machop.jpg',
+        'img/pokemon/moltres.jpg',
+        'img/pokemon/paras.jpg'
+      ];
+
+      var base = 'http://www.ournewballandchain.com';
+      var budget = 2;
+      var mondrian_cont = document.querySelector("#mondrian-container");
+      var mondrian;
+
+      $.getJSON(base + '/floto/api/events/test/tip?n=11',
+                function(data) {
+                  var imgs = [];
+                  $.each(data.photos, function (key, val){
+                    imgs.push(val.url);
+                  });
+                   mondrian = new Mondrian(mondrian_cont, budget, imgs);
+
+                 });
+      window.setInterval(function() {
+
+        $.getJSON(base + '/floto/api/events/test/tip?n=2',
+                 function(data) {
+                 $.each(data.photos, function (key, val){
+                    mondrian.add_image(val.url);
+                  });
+                 });
+
+      }, 5000);
+
+
+
+
+    </script>
+   </body>
+ </html>
