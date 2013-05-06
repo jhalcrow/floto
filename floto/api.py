@@ -41,7 +41,7 @@ def recieve_photo(event_id):
 
 
 @api.route("/events/<event_id>/tip", methods=["GET", "OPTIONS"])
-@crossdomain(origin='localhost', headers=['X-Requested-With'])
+@crossdomain(origin='localhost:8080', headers=['X-Requested-With'])
 def get_tip(event_id):
     '''
     Get the metadata n most recent photos
@@ -62,7 +62,7 @@ def get_tip(event_id):
 
 
 @api.route("/events/<event_id>/new", methods=["GET", "OPTIONS"])
-@crossdomain(origin='localhost', headers=['X-Requested-With'])
+@crossdomain(origin='localhost:8080', headers=['X-Requested-With'])
 def get_new(event_id):
     '''
     Get any new photos since the last call, up to n
