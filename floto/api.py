@@ -75,7 +75,7 @@ def get_new(event_id):
 
     query = {'event': event_id}
     if session['cur']:
-      query['_id'] = {'$nin': session['cur']}}
+      query['_id'] = {'$nin': session['cur']}
 
 
     if 'last_ts' in session:
