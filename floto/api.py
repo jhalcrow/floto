@@ -41,14 +41,14 @@ def recieve_photo(event_id):
 
 
 @api.route("/events/<event_id>/tip", methods=["GET", "OPTIONS"])
-@crossdomain(origin='*', headers=['X-Requested-With'])
+@crossdomain(origin='localhost', headers=['X-Requested-With'])
 def get_tip(event_id):
     '''
     Get the metadata n most recent photos
     '''
     db = current_app.extensions['mongo']
     n = int(request.args.get('n', 6))
-    recent = db.photos.find({'event': event_id}, 
+    recent = db.photos.find({'event': event_id},
         sort=[('ts', pymongo.DESCENDING)]).limit(n)
     response = {'photos':[]}
     session['cur'] = []
@@ -59,15 +59,15 @@ def get_tip(event_id):
     if response['photos']:
         session['last_ts'] = response['photos'][0]['ts']
     return jsonify(response)
-    
+
 
 @api.route("/events/<event_id>/new", methods=["GET", "OPTIONS"])
-@crossdomain(origin='*', headers=['X-Requested-With'])
+@crossdomain(origin='localhost', headers=['X-Requested-With'])
 def get_new(event_id):
     '''
     Get any new photos since the last call, up to n
     '''
-    
+
     db = current_app.extensions['mongo']
     n = int(request.args.get('n', 1))
     query = {'event': event_id, '_id': {'$nin': session['cur']}}
@@ -76,7 +76,7 @@ def get_new(event_id):
         query['ts'] = {'$gt': session['last_ts']}
     recent = db.photos.find(query,sort=[('ts', pymongo.ASCENDING)]).limit(n)
     if recent.count():
-        session['last_ts'] = max([p['ts'] for p in recent]) 
+        session['last_ts'] = max([p['ts'] for p in recent])
 
     if recent.count() < n:
         rand_photos = db.photos.find(
@@ -85,7 +85,7 @@ def get_new(event_id):
             '_id': {'$nin': session['cur']},
             }, sort=[('random', 1)]).limit(n-recent.count())
         recent = itertools.chain(recent, rand_photos)
-    
+
     response = {'photos':[]}
     for p in recent:
         response['photos'].append(mongo_to_message(p))
@@ -99,7 +99,7 @@ def on_realtime_callback(event_id):
     mode = request.args.get("hub.mode")
     challenge = request.args.get("hub.challenge")
     verify_token = request.args.get("hub.verify_token")
-    if challenge: 
+    if challenge:
         return challenge
     else:
         x_hub_signature = request.headers.get('X-Hub-Signature')
