@@ -41,7 +41,7 @@ def crossdomain(origin=None, methods=None, headers=None,
                 return resp
 
             h = resp.headers
-
+            h['Access-Control-Allow-Credentials'] = 'true'
             h['Access-Control-Allow-Origin'] = origin
             h['Access-Control-Allow-Methods'] = get_methods()
             h['Access-Control-Max-Age'] = str(max_age)
@@ -92,7 +92,7 @@ def process_image_bytes(bytes):
     img = Image.open(StringIO.StringIO(bytes))
     img = orient_img(img)
     img = resize_img(img)
-            
+
     img_buf = StringIO.StringIO()
     format = img.format or 'JPEG'
     img.save(img_buf, format)
