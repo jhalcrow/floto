@@ -70,10 +70,11 @@ def get_new(event_id):
 
     db = current_app.extensions['mongo']
     n = int(request.args.get('n', 1))
-    query = {'event': event_id, '_id': {'$nin': session['cur']}}
-
     if 'cur' not in session:
       session['cur'] = []
+
+    query = {'event': event_id, '_id': {'$nin': session['cur']}}
+
 
     if 'last_ts' in session:
         query['ts'] = {'$gt': session['last_ts']}
