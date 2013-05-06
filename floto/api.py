@@ -41,7 +41,7 @@ def recieve_photo(event_id):
 
 
 @api.route("/events/<event_id>/tip", methods=["GET", "OPTIONS"])
-@crossdomain(origin='localhost:8080', headers=['X-Requested-With'])
+@crossdomain(origin='*', headers=['X-Requested-With'])
 def get_tip(event_id):
     '''
     Get the metadata n most recent photos
@@ -62,7 +62,7 @@ def get_tip(event_id):
 
 
 @api.route("/events/<event_id>/new", methods=["GET", "OPTIONS"])
-@crossdomain(origin='localhost:8080', headers=['X-Requested-With'])
+@crossdomain(origin='*', headers=['X-Requested-With'])
 def get_new(event_id):
     '''
     Get any new photos since the last call, up to n
@@ -71,6 +71,9 @@ def get_new(event_id):
     db = current_app.extensions['mongo']
     n = int(request.args.get('n', 1))
     query = {'event': event_id, '_id': {'$nin': session['cur']}}
+
+    if 'cur' not in session:
+      session['cur'] = []
 
     if 'last_ts' in session:
         query['ts'] = {'$gt': session['last_ts']}
