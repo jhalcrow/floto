@@ -73,7 +73,9 @@ def get_new(event_id):
     if 'cur' not in session:
       session['cur'] = []
 
-    query = {'event': event_id, '_id': {'$nin': session['cur']}}
+    query = {'event': event_id}
+    if session['cur']:
+      query['_id'] = {'$nin': session['cur']}}
 
 
     if 'last_ts' in session:
@@ -83,11 +85,12 @@ def get_new(event_id):
         session['last_ts'] = max([p['ts'] for p in recent])
 
     if recent.count() < n:
+        if 'ts' in query:
+          del query['ts']
+
+        query['random'] = {'$gte': random.random()}
         rand_photos = db.photos.find(
-            {
-            'random': {'$gte': random.random()},
-            '_id': {'$nin': session['cur']},
-            }, sort=[('random', 1)]).limit(n-recent.count())
+           query, sort=[('random', 1)]).limit(n-recent.count())
         recent = itertools.chain(recent, rand_photos)
 
     response = {'photos':[]}
