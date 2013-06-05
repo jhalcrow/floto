@@ -67,6 +67,7 @@ def get_new(event_id):
     '''
     Get any new photos since the last call, up to n
     '''
+    #import pdb; pdb.set_trace()
 
     db = current_app.extensions['mongo']
     n = int(request.args.get('n', 1))
@@ -80,18 +81,21 @@ def get_new(event_id):
 
     if 'last_ts' in session:
         query['ts'] = {'$gt': session['last_ts']}
-    recent = db.photos.find(query,sort=[('ts', pymongo.ASCENDING)]).limit(n)
-    if recent.count():
+    recent = [p for p in db.photos.find(query,sort=[('ts', pymongo.ASCENDING)], limit=n)]
+    if recent:
         session['last_ts'] = max([p['ts'] for p in recent])
 
-    if recent.count() < n:
+    if len(recent) < n:
         if 'ts' in query:
           del query['ts']
 
         query['random'] = {'$gte': random.random()}
         rand_photos = db.photos.find(
-           query, sort=[('random', 1)]).limit(n-recent.count())
-        recent = itertools.chain(recent, rand_photos)
+           query, sort=[('random', 1)]).limit(n-len(recent))
+        for p in rand_photos:
+          if len(recent) >= n:
+            break
+          recent.append(p)
 
     response = {'photos':[]}
     for p in recent:
