@@ -2,6 +2,7 @@
 <html>
   <head>
     <script type="text/javascript" src="js/random_grid.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Alef' rel='stylesheet' type='text/css'>
     <style type="text/css">
       body {
         margin: 0px;
@@ -41,12 +42,14 @@
       }
 
       #caption {
-        width:50%;
+        font-family: 'Alef', sans-serif;
+        width:49%;
         height: 33%;
         display: inline-block;
         margin: 0;
-        padding: 0.5em;
+        padding-left: 1%;
         float: left;
+        text-overflow: ellipsis;
       }
 
 
@@ -120,7 +123,7 @@
         }
       }
       xhr.send();
-      //window.setInterval(refreshMain, 5000);
+      window.setInterval(refreshMain, 10000);
     </script>
   </body>
 
