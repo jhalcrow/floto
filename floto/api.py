@@ -85,7 +85,11 @@ def get_new(event_id):
     if recent:
         session['last_ts'] = max([p['ts'] for p in recent])
 
-    if len(recent) < n:
+    ct = 0
+    while len(recent) < n:
+        ct += 1
+        if ct > 10:
+            break
         if 'ts' in query:
           del query['ts']
 
