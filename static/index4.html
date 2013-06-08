@@ -94,7 +94,7 @@
 
       function refreshMain() {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/floto/api/events/test/new?n=1", true);
+        xhr.open("GET", "/floto/api/events/wedding/new?n=1", true);
         xhr.onload = function() {
           var imgRes = JSON.parse(this.responseText);
           photoBuffer.push(imgRes.photos[0]);
@@ -110,7 +110,7 @@
 
 
       var xhr = new XMLHttpRequest();
-      xhr.open("GET", "/floto/api/events/test/tip?n=6", true);
+      xhr.open("GET", "/floto/api/events/wedding/tip?n=6", true);
       xhr.onload = function() {
         var imgRes = JSON.parse(this.responseText);
         photoBuffer = imgRes.photos;
