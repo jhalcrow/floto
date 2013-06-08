@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+  <head>
+    <script type="text/javascript" src="js/random_grid.js"></script>
+    <style type="text/css">
+      body {
+        margin: 0px;
+        padding: 0px;
+        background-color: rgb(117, 115, 115);
+      }
+
+      #content {
+        width: 100%; /*960px;*/
+        height: 100%; /* 540px; */
+        margin: 0px;
+        padding: 0px;
+        color:white;
+      }
+
+      #main-photo {
+        float:left;
+        width: 56.25%;
+        height: 100%;
+        display: inline-block;
+      }
+
+      #side-matter {
+        float: right;
+        display: inline-block;
+        width: 43.75%;
+        height: 100%;
+      }
+
+      .on-deck {
+        display: inline-block;
+        width: 50%;
+        height: 33%;
+        margin: 0;
+        padding: 0;
+        float: left;
+      }
+
+      #caption {
+        width:50%;
+        height: 33%;
+        display: inline-block;
+        margin: 0;
+        padding: 0.5em;
+        float: left;
+      }
+
+
+    </style>
+  </head>
+
+  <body>
+    <div id="content">
+    <div id="main-photo"></div>
+    <div id="side-matter">
+      <div id="caption"></div>
+      <div id="photo-1" class="on-deck"></div>
+      <div id="photo-2" class="on-deck"></div>
+      <div id="photo-3" class="on-deck"></div>
+      <div id="photo-4" class="on-deck"></div>
+      <div id="photo-5" class="on-deck"></div>
+    </div>
+    </div>
+    <script>
+
+      var photoBuffer = [];
+
+      function setMainPhoto(photo) {
+          var img = new Image();
+          img.src = photo.url;
+          mp = document.getElementById('main-photo');
+          mp.innerHTML = '';
+          img.setAttribute('width', mp.clientWidth);
+          mp.appendChild(img);
+
+          var caption = document.getElementById('caption');
+          caption.innerHTML = photo.caption + ' by ' +
+            photo.name;
+      }
+
+      function updateSubPhoto(i, photo) {
+          var img = new Image();
+          img.src = photo.url;
+          mp = document.getElementById('photo-'+i);
+          mp.innerHTML = '';
+          img.setAttribute('width', mp.clientWidth);
+          mp.appendChild(img);
+
+      }
+
+      function refreshMain() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/floto/api/events/test/new?n=1", true);
+        xhr.onload = function() {
+          var imgRes = JSON.parse(this.responseText);
+          photoBuffer.push(imgRes.photos[0]);
+          photoBuffer = photoBuffer.slice(1);
+          setMainPhoto(photoBuffer[0]);
+          for(var i=1; i<photoBuffer.length; i++) {
+            updateSubPhoto(i, photoBuffer[i]);
+          }
+        }
+        xhr.send();
+      }
+
+
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/floto/api/events/test/tip?n=6", true);
+      xhr.onload = function() {
+        var imgRes = JSON.parse(this.responseText);
+        photoBuffer = imgRes.photos;
+        setMainPhoto(photoBuffer[0]);
+        for(var i=1; i<photoBuffer.length; i++) {
+            updateSubPhoto(i, photoBuffer[i]);
+        }
+      }
+      xhr.send();
+      //window.setInterval(refreshMain, 5000);
+    </script>
+  </body>
+
+</html>
