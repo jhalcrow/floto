@@ -93,6 +93,7 @@ def get_new(event_id):
         if 'ts' in query:
           del query['ts']
 
+        query = {'event': event_id}
         query['random'] = {'$gte': random.random()}
         rand_photos = db.photos.find(
            query, sort=[('random', 1)]).limit(n-len(recent))
